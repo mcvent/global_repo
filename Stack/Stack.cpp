@@ -2,10 +2,10 @@
 
 using namespace std;
 //struct queue {
-//	int inf;
-//	queue* next;
+//    int inf;
+//    queue* next;
 //};
-//void push(queue*& h, queue*& t, int x){ //вставка элемента в очередь
+//void push(queue*& h, queue*& t, int x) { //вставка элемента в очередь
 //    queue* r = new queue;    //создаем новый элемент
 //    r->inf = x;
 //    r->next = NULL;    //всегда последний
@@ -27,57 +27,56 @@ using namespace std;
 //    return i;
 //}
 //
-//void findthepos(queue* h, queue*& t, int x, int& f1, int& f2) {
+//void findthepos(queue* h, queue* t, int x, int& f1, int& f2, queue*& h2, queue*& t2) {
 //    f1 = f2 = -1;
 //    int pos = 0;
-//    while (h) {
-//        if (h->inf == x) {
+//    queue* h1 = NULL, * t1 = NULL; //temp
+//
+//
+//    while (h) {//сначала перекладываем элементы в temp 
+//        push(h1, t1, pop(h, t));
+//    }
+//    while (h1) {
+//        int current = pop(h1, t1);
+//        push(h2, t2, current);
+//        //cout << current;
+//        if (current == x) {
 //            if (f1 == -1) {
 //                f1 = pos;
 //            }
 //            f2 = pos;
 //        }
-//        h = h->next;
 //        pos++;
 //    }
 //}
-//int findmin(queue* h) {
-//    int min = 1000000;
-//    while (h) {
-//        if (h->inf < min) {
-//            min = h->inf;
-//        }
-//        h = h->next;
-//    }
-//    return min;
-//}
+//
 //int main() {
 //    setlocale(LC_ALL, "RU");
 //    int n; cin >> n;
 //    queue* h = NULL, * t = NULL;
+//    int min = 1000000;
 //    cout << "Введите n элементов: "; int x;
 //    for (int i = 0; i < n; ++i) {
 //        cin >> x;
+//        if (x < min) min = x;
 //        push(h, t, x); //заполняем очередь
 //    }
 //
-//
+//    queue* h2 = NULL, * t2 = NULL; //temp 
 //    int first_min_pos, last_min_pos;
-//    int min = findmin(h);
-//    findthepos(h,t,min, first_min_pos, last_min_pos);
-//    cout << first_min_pos << endl << last_min_pos << endl;
-//    
+//    findthepos(h, t, min, first_min_pos, last_min_pos, h2, t2);
+//    //cout << first_min_pos << endl << last_min_pos << endl;
 //    queue* new_h = NULL, * new_t = NULL;
-//    queue* current = h;
+//    queue* r = h2;
 //    int pos = 0;
-//    while (current) {
+//    while (h2) {
+//        int current = pop(h2, t2); 
 //        if (pos != first_min_pos && pos != last_min_pos) {
-//            push(new_h, new_t, current->inf);
+//            push(new_h, new_t, current); 
 //        }
-//        current = current->next;
 //        pos++;
 //    }
-//    
+//
 //    cout << "Итог: ";
 //    while (new_h) {
 //        cout << pop(new_h, new_t) << " ";
@@ -90,29 +89,31 @@ using namespace std;
 //    int inf;
 //    stack* next;
 //};
-//void push(stack*& h, int x) {
-//    stack* r = new stack; //создаем новый элемент
-//    r->inf = x; //поле inf = x
-//    r->next = h; //следующим элементов является h
-//    h = r; //теперь r является головой
+//
+//void push(stack*& h, char x) {
+//    stack* r = new stack; 
+//    r->inf = x; 
+//    r->next = h; 
+//    h = r; 
 //
 //}
+//
 //int pop(stack*& h) {
-//    int i = h->inf;//значение первого элемента
-//    stack* r = h;//указатель на голову стека
-//    h = h->next;//переносим указатель на следующий элемент
-//    delete r;//удаляем первый элемент
-//    return i;//возвращаем значение
+//    int i = h->inf;
+//    stack* r = h;
+//    h = h->next;
+//    delete r;
+//    return i;
 //
 //}
 //
 //void reverse(stack*& h) {//"обращение"стека
-//    stack* head1 = NULL;//инициализация буферного стека
-//    while (h)//пока стек не пуст
-//        push(head1, pop(h));//переписываем из одного стека в другой
-//    h = head1;//переобозначаем указатели
-//}
-//bool isPrime(int n) {//функция для проверки на простое число
+//        stack* head1 = NULL;
+//        while (h)
+//            push(head1, pop(h));
+//        h = head1;
+//    }
+//bool isPrime(int n) {
 //    if (n <= 1) return false;
 //    if (n == 2) return true;
 //    if (n % 2 == 0) return false;
@@ -138,7 +139,7 @@ using namespace std;
 //}
 //int main() {
 //    setlocale(LC_ALL, "RU");
-//    int n, m;
+//    int n;
 //    cin >> n;
 //    stack* st = NULL;
 //    int x;
@@ -147,8 +148,8 @@ using namespace std;
 //        cin >> x;
 //        push(st, x);
 //    }
-//    reverse(st);//переворачиваем стек
-//    stack* res = result(st);//результат
+//    reverse(st); 
+//    stack* res = result(st);
 //
 //    while (res)
 //        cout << pop(res) << " ";
@@ -156,59 +157,55 @@ using namespace std;
 //
 //    return 0;
 //}
-
 //Задача 2
 struct stack {
-    int inf;
+    char inf;
     stack* next;
 };
 
-void push(stack*& h, int x) {
-    stack* r = new stack; //создаем новый элемент
-    r->inf = x; //поле inf = x
-    r->next = h; //следующим элементов является h
-    h = r; //теперь r является головой
+void push(stack*& h, char x) {
+    stack* r = new stack; 
+    r->inf = x; 
+    r->next = h; 
+    h = r; 
 
 }
 
-int pop(stack*& h) {
-    int i = h->inf;//значение первого элемента
-    stack* r = h;//указатель на голову стека
-    h = h->next;//переносим указатель на следующий элемент
-    delete r;//удаляем первый элемент
-    return i;//возвращаем значение
+char pop(stack*& h) {
+    char i = h->inf;
+    stack* r = h;
+    h = h->next;
+    delete r;
+    return i;
 
 }
 
 void reverse(stack*& h) {//"обращение"стека
-    stack* head1 = NULL;//инициализация буферного стека
-    while (h)//пока стек не пуст
-        push(head1, pop(h));//переписываем из одного стека в другой
-    h = head1;//переобозначаем указатели
+    stack* head1 = NULL;
+    while (h)
+        push(head1, pop(h));
+    h = head1;
 }
 
-bool isPrime(int n) {//функция для проверки на простое число
-    if (n <= 1) return false;
-    if (n == 2) return true;
-    if (n % 2 == 0) return false;
-    for (int i = 3; i * i <= n; i += 2)
-        if (n % i == 0) return false;
-    return true;
+bool isglasn(char n) {
+    return (n == 'a' || n == 'u' || n == 'e' || n == 'y' || n == 'o' || n == 'i');
 }
 
-stack* result(stack*& h, int m) {
-    stack* temp = NULL;
+stack* result(stack*& h) {
+    stack* tmp = NULL;
     stack* res = NULL;
-    int newl = m;
+    bool f = true;
+    char newl = '?';
 
     while (h) {//сначала перекладываем элементы в temp 
-        push(temp, pop(h));
+        push(tmp, pop(h));
     }
-    while (temp) {
-        int current = pop(temp);
-        if (isPrime(current)) {
+    while (tmp) {
+        char current = pop(tmp);
+        if (isglasn(current) && f) {
             push(res, current);
             push(res, newl);
+            f = false;
         }
         else {
             push(res, current);
@@ -219,22 +216,18 @@ stack* result(stack*& h, int m) {
 }
 
 int main() {
-    int n, m;
-    cout << "n = ";
+    setlocale(LC_ALL, "RU");
+    int n;
     cin >> n;
     stack* head = NULL;
-    int x;
-    cout << "elements: ";
+    char x;
+    cout << "Введите элементы: ";
     for (int i = 0; i < n; i++) {
         cin >> x;
         push(head, x);
     }
-    cout << "new element: ";
-    cin >> m;
-    reverse(head);//переворачиваем стек
-
-    stack* res = result(head, m);//результат
-
+    stack* res = result(head);//результат
+    reverse(res);
     while (res)
         cout << pop(res) << " ";
     cout << endl;
@@ -244,72 +237,72 @@ int main() {
 
 
 //Задача 4
-struct queue {
-	int inf;
-	queue* next;
-};
-void push(queue*& h, queue*& t, int x){ //вставка элемента в очередь
-    queue* r = new queue;    //создаем новый элемент
-    r->inf = x;
-    r->next = NULL;    //всегда последний
-    if (!h && !t) {    //если очередь пуста
-        h = t = r;    //это и голова и хвост
-    }
-    else {
-        t->next = r;    //r - следующий для хвоста
-        t = r;    //теперь r - хвост
-    }
-}
-int pop(queue*& h, queue*& t) { //удаление элемента из очереди
-    queue* r = h;    //создаем указатель на голову
-    int i = h->inf;    //сохраняем значение головы
-    h = h->next;    //сдвигаем указатель на следующий элемент
-    if (!h)    //если удаляем последний элемент из очереди
-        t = NULL;
-    delete r;    //удаляем первый элемент
-    return i;
-}
-// Функция циклического сдвига
-void сдвиг(queue*& h, queue*& t) {
-    if (!h) return;
-
-    queue* tmp_h = NULL, * tmp_t = NULL;
-    bool found = false;
-    int f = -1;
-    int pos = 0;
-
-    // Находим позицию первого нечетного элемента
-    queue* m = h;
-    while (m) {
-        if (m->inf % 2 != 0) {
-            f = pos;
-            break;
-        }
-        m = m->next;
-        pos++;
-    }
-    // Переносим элементы до первого нечетного в конец
-    for (int i = 0; i < f; ++i) {
-        push(h, t, pop(h, t));
-    }
-}
-
-int main() {
-    setlocale(LC_ALL, "RU");
-    int n; cin >> n;
-    queue* h = NULL, * t = NULL;
-    cout << "Введите n элементов: "; int x;
-    for (int i = 0; i < n; ++i) {
-        cin >> x;
-        push(h, t, x); //заполняем очередь
-    }
-
-    сдвиг(h, t);
-
-    while (h) {
-            cout << h->inf << " ";
-            h = h->next;
-        }
-        cout << endl;
-    return 0;
-}
+//struct queue {
+//    int inf;
+//    queue* next;
+//};
+//void push(queue*& h, queue*& t, int x) { 
+//    queue* r = new queue;   
+//    r->inf = x;
+//    r->next = NULL;  
+//    if (!h && !t) {   
+//        h = t = r;  
+//    }
+//    else {
+//        t->next = r;    
+//        t = r;   
+//    }
+//}
+//int pop(queue*& h, queue*& t) {
+//    queue* r = h; 
+//    int i = h->inf; 
+//    h = h->next;    
+//    if (!h)    
+//        t = NULL;
+//    delete r;    //удаляем первый элемент
+//    return i;
+//}
+//// Функция циклического сдвига
+//void сдвиг(queue*& h, queue*& t) {
+//    if (!h) return;
+//
+//    queue* tmp_h = NULL, * tmp_t = NULL;
+//    bool found = false;
+//    int f = -1;
+//    int pos = 0;
+//
+//    // Находим позицию первого нечетного элемента
+//    queue* m = h;
+//    while (m) {
+//        if (m->inf % 2 != 0) {
+//            f = pos;
+//            break;
+//        }
+//        m = m->next;
+//        pos++;
+//    }
+//    // Переносим элементы до первого нечетного в конец
+//    for (int i = 0; i < f; ++i) {
+//        push(h, t, pop(h, t));
+//    }
+//}
+//
+//int main() {
+//    setlocale(LC_ALL, "RU");
+//    int n; cin >> n;
+//    queue* h = NULL, * t = NULL;
+//    cout << "Введите n элементов: "; int x;
+//    for (int i = 0; i < n; ++i) {
+//        cin >> x;
+//        push(h, t, x); //заполняем очередь
+//    }
+//
+//    сдвиг(h, t);
+//
+//    while (h) {
+//        cout << h->inf << " ";
+//        h = h->next;
+//    }
+//    cout << endl;
+//    return 0;
+//}
