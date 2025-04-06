@@ -47,6 +47,15 @@ void del_els(list*& h, list*& t, list* r) {//функция для удален�
     }
     delete r;//удаляем r
 }
+void del_list(list*& h, list*& t) {
+    while (h) {
+        list* p = h;
+        h = h->next;
+        if (h) h->prev = NULL;
+        else t = NULL;
+        delete p;
+    }
+}
 //Задача 1
 //void findthepos(list* h, list* t, int x, int& f1, int& f2) {
 //    f1 = f2 = -1;
@@ -66,8 +75,6 @@ void del_els(list*& h, list*& t, list* r) {//функция для удален�
 //    }
 //}
 //void result(list*& h, list*& t, int f1, int f2) {
-//    if (!h || !h->next) return; //если список пуст или содержит 1 элемент
-//
 //    list* current = h;
 //    int pos = 0;
 //    while (current) {
@@ -100,62 +107,105 @@ void del_els(list*& h, list*& t, list* r) {//функция для удален�
 //    return 0;
 //}
 //Задача 2
-//Создать двусвязный список, содержащий целые числа.Удалить лишние элементы так, чтобы каждый элемент был не меньше среднего арифметического всех элементов, следующих за ним.Например, для списка 5 2 9 1 3 7 1 2 9, результат должен быть 5 9 7 9.
-int calc_avg(list* node) {//функция для среднего арифмитического
-    if (!node || !node->next) return 0;
-
-    int sum = 0;
-    int count = 0;
-    list* p = node->next;
-
-    while (p) {
-        sum += p->inf;
-        count++;
-        p = p->next;
-    }
-
-    return sum / count;
-}
-void result(list*& h, list*& t) {
-    if (!h || !h->next) return;
+// Функция для переноса четных чисел в начало списка
+void moveEvensToFront(list*& h, list*& t) {
+    list* evensHead = NULL, * evensTail = NULL;
+    list* oddsHead = NULL, * oddsTail = NULL;
     list* current = h;
     while (current) {
-        list* next_node = current->next;//сохраняем ссылку на следующий элемент
-        int avg = calc_avg(current);
-        if (current->next && current->inf < avg) {
-            del_els(h, t, current);
+        list* nextNode = current->next;
+        current->next = current->prev = NULL; // Изолируем текущий узел
+
+        if (current->inf % 2 == 0) {
+            if (!evensHead) {
+                evensHead = evensTail = current;
+            }
+            else {
+                evensTail->next = current;
+                current->prev = evensTail;
+                evensTail = current;
+            }
         }
-        current = next_node;
+        else {
+            if (!oddsHead) {
+                oddsHead = oddsTail = current;
+            }
+            else {
+                oddsTail->next = current;
+                current->prev = oddsTail;
+                oddsTail = current;
+            }
+        }
+        current = nextNode;
     }
-}
-void del_list(list*& h, list*& t) {
-    while (h) {
-        list* p = h;
-        h = h->next;
-        if (h) h->prev = NULL;
-        else t = NULL;
-        delete p;
+    // Соединяем списки
+    if (evensHead) {
+        h = evensHead;
+        if (oddsHead) {
+            evensTail->next = oddsHead;
+            oddsHead->prev = evensTail;
+            t = oddsTail;
+        }
+        else {
+            t = evensTail;
+        }
     }
 }
 int main() {
+    setlocale(LC_ALL, "RU");
     list* head = NULL, * tail = NULL;
-    int n, x;
-
-    cout << "n: ";
-    cin >> n;
-
-    cout << "elements: ";
+    int n, x; cin >> n; cout << "Введите элементы: ";
     for (int i = 0; i < n; ++i) {
         cin >> x;
         push(head, tail, x);
     }
 
-    result(head, tail);
+    moveEvensToFront(head, tail);
 
-    cout << "res: ";
     print(head);
-
-    del_list(head, tail);
-
+    //del_list(head, tail);
     return 0;
 }
+// Задача 3
+////Создать двусвязный список, содержащий целые числа.Удалить лишние элементы так, чтобы каждый элемент был не меньше среднего арифметического всех элементов, следующих за ним.Например, для списка 5 2 9 1 3 7 1 2 9, результат должен быть 5 9 7 9.
+//int calc_avg(list* node) {//функция для среднего арифмитического
+//    if (!node || !node->next) return 0;
+//
+//    int sum = 0;
+//    int count = 0;
+//    list* p = node->next;
+//
+//    while (p) {
+//        sum += p->inf;
+//        count++;
+//        p = p->next;
+//    }
+//
+//    return sum / count;
+//}
+//void result(list*& h, list*& t) {
+//    if (!h || !h->next) return;
+//    list* current = h;
+//    while (current) {
+//        list* next_node = current->next;//сохраняем ссылку на следующий элемент
+//        int avg = calc_avg(current);
+//        if (current->next && current->inf < avg) {
+//            del_els(h, t, current);
+//        }
+//        current = next_node;
+//    }
+//}
+//int main() {
+//    setlocale(LC_ALL, "RU");
+//    list* head = NULL, * tail = NULL;
+//    int n, x; cin >> n; cout << "Введите элементы: ";
+//    for (int i = 0; i < n; ++i) {
+//        cin >> x;
+//        push(head, tail, x);
+//    }
+//    result(head, tail);
+//
+//    print(head);
+//    del_list(head, tail);
+//    return 0;
+//}
